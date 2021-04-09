@@ -11,6 +11,7 @@ const App = () => {
     height: "auto"
   };
   const handleFileInputChange = async e => {
+    // Get the file from the input
     const file = e.target.files[0];
     if (file) {
       setIsLoading(true);
@@ -18,6 +19,8 @@ const App = () => {
         "Here's the file from the input, presumably .heic (in blob form): ",
         file
       );
+
+      // convert heic file to jpeg file
       const convertedFile = await heic2any({
         blob: file,
         toType: "image/jpeg"
@@ -26,8 +29,11 @@ const App = () => {
         "Here's the file converted to .jpeg, still in blob form: ",
         convertedFile
       );
+
+      // instantiate filereader
       let reader = new FileReader();
 
+      // define behavior for when filereader loads a file
       reader.onload = async e => {
         console.log(
           "Here is the file info after the FileReader has processed the converted file: ",
@@ -38,8 +44,10 @@ const App = () => {
         setIsLoading(false);
       };
 
+      // load the file with the filereader
       reader.readAsDataURL(convertedFile);
     } else {
+      // no file was selected
       setIsLoading(false);
       setImageSource(null);
     }
